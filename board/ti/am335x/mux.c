@@ -367,6 +367,9 @@ void enable_board_pin_mux(struct ti_am_eeprom *header)
 #else
 		configure_module_pin_mux(mmc1_pin_mux);
 #endif
+	} else if (board_is_som_ph8700()) {
+		configure_module_pin_mux(mmc0_pin_mux);
+		configure_module_pin_mux(i2c0_pin_mux);
 	} else {
 		puts("Unknown board, cannot configure pinmux.");
 		hang();

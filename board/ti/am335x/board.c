@@ -196,7 +196,7 @@ void am33xx_spl_board_init(void)
 	/* Get the frequency */
 	dpll_mpu_opp100.m = am335x_get_efuse_mpu_max_freq(cdev);
 
-	if (board_is_bone() || board_is_bone_lt()) {
+	if (board_is_bone() || board_is_bone_lt() || board_is_som_ph8700()) {
 		/* BeagleBone PMIC Code */
 		int usb_cur_lim;
 
@@ -215,7 +215,7 @@ void am33xx_spl_board_init(void)
 		 * On Beaglebone White we need to ensure we have AC power
 		 * before increasing the frequency.
 		 */
-		if (board_is_bone()) {
+		if (board_is_bone() || board_is_som_ph8700()) {
 			uchar pmic_status_reg;
 			if (tps65217_reg_read(TPS65217_STATUS,
 					      &pmic_status_reg))
@@ -271,7 +271,7 @@ void am33xx_spl_board_init(void)
 		 * Set LDO3, LDO4 output voltage to 3.3V for Beaglebone.
 		 * Set LDO3 to 1.8V and LDO4 to 3.3V for Beaglebone Black.
 		 */
-		if (board_is_bone()) {
+		if (board_is_bone() || board_is_som_ph8700()) {
 			if (tps65217_reg_write(TPS65217_PROT_LEVEL_2,
 					       TPS65217_DEFLS1,
 					       TPS65217_LDO_VOLTAGE_OUT_3_3,
@@ -426,7 +426,7 @@ void sdram_init(void)
 	if (board_is_evm_sk())
 		config_ddr(303, &ioregs_evmsk, &ddr3_data,
 			   &ddr3_cmd_ctrl_data, &ddr3_emif_reg_data, 0);
-	else if (board_is_bone_lt())
+	else if (board_is_bone_lt() || board_is_som_ph8700())
 		config_ddr(400, &ioregs_bonelt,
 			   &ddr3_beagleblack_data,
 			   &ddr3_beagleblack_cmd_ctrl_data,

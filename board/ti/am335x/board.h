@@ -36,6 +36,11 @@ static inline int board_is_gp_evm(void)
 	return board_am_is("A33515BB");
 }
 
+static inline int board_is_som_ph8700(void)
+{
+	return board_am_is("SOM-PH8700");
+}
+
 static inline int board_is_evm_15_or_later(struct ti_am_eeprom *header)
 {
 	return (board_is_gp_evm() &&

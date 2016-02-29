@@ -83,6 +83,7 @@ int __maybe_unused ti_i2c_eeprom_am_get(int bus_addr, int dev_addr,
 		return -1;
 
 	ep = TI_AM_EEPROM_DATA;
+	
 	if (ep->header == TI_EEPROM_HEADER_MAGIC)
 		goto already_read;
 
@@ -110,8 +111,18 @@ int __maybe_unused ti_i2c_eeprom_am_get(int bus_addr, int dev_addr,
 		if (rc)
 			return rc;
 	}
-	if (ep->header != TI_EEPROM_HEADER_MAGIC)
-		return -1;
+	if (ep->header != TI_EEPROM_HEADER_MAGIC){
+		/*
+		* strcpy(ep->name, "SOM-PH8700");
+		* ep->header = TI_EEPROM_HEADER_MAGIC;
+		*
+		* Temporary configuration, because PH8700 eeprom is empty now;
+		* If the eeprom written content in the future ,please delete them;
+		*/
+		strcpy(ep->name, "SOM-PH8700");
+		ep->header = TI_EEPROM_HEADER_MAGIC;
+		/*return -1;*/
+        }
 
 already_read:
 	*epp = ep;
