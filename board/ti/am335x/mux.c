@@ -153,6 +153,24 @@ static struct module_pin_mux rgmii1_pin_mux[] = {
 	{-1},
 };
 
+static struct module_pin_mux rgmii2_pin_mux[] = {
+	{OFFSET(gpmc_a0), MODE(2)},			/* RGMII2_TCTL */
+	{OFFSET(gpmc_a1), MODE(2) | RXACTIVE},	/* RGMII2_RCTL */
+	{OFFSET(gpmc_a2), MODE(2)},			/* RGMII2_TD3 */
+	{OFFSET(gpmc_a3), MODE(2)},			/* RGMII2_TD2 */
+	{OFFSET(gpmc_a4), MODE(2)},			/* RGMII2_TD1 */
+	{OFFSET(gpmc_a5), MODE(2)},			/* RGMII2_TD0 */
+	{OFFSET(gpmc_a6), MODE(2)},			/* RGMII2_TCLK */
+	{OFFSET(gpmc_a7), MODE(2) | RXACTIVE},	/* RGMII2_RCLK */
+	{OFFSET(gpmc_a8), MODE(2) | RXACTIVE},	/* RGMII2_RD3 */
+	{OFFSET(gpmc_a9), MODE(2) | RXACTIVE},	/* RGMII2_RD2 */
+	{OFFSET(gpmc_a10), MODE(2) | RXACTIVE},	/* RGMII2_RD1 */
+	{OFFSET(gpmc_a11), MODE(2) | RXACTIVE},	/* RGMII2_RD0 */
+	{OFFSET(mdio_data), MODE(0) | RXACTIVE | PULLUP_EN},/* MDIO_DATA */
+	{OFFSET(mdio_clk), MODE(0) | PULLUP_EN},	/* MDIO_CLK */
+	{-1},
+};
+
 static struct module_pin_mux mii1_pin_mux[] = {
 	{OFFSET(mii1_rxerr), MODE(0) | RXACTIVE},	/* MII1_RXERR */
 	{OFFSET(mii1_txen), MODE(0)},			/* MII1_TXEN */
@@ -370,6 +388,8 @@ void enable_board_pin_mux(struct ti_am_eeprom *header)
 	} else if (board_is_som_ph8700()) {
 		configure_module_pin_mux(mmc0_pin_mux);
 		configure_module_pin_mux(i2c0_pin_mux);
+		configure_module_pin_mux(rgmii1_pin_mux);
+		configure_module_pin_mux(rgmii2_pin_mux);
 	} else {
 		puts("Unknown board, cannot configure pinmux.");
 		hang();

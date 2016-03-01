@@ -487,12 +487,12 @@ static struct cpsw_slave_data cpsw_slaves[] = {
 	{
 		.slave_reg_ofs	= 0x208,
 		.sliver_reg_ofs	= 0xd80,
-		.phy_addr	= 0,
+		.phy_addr	= 4,
 	},
 	{
 		.slave_reg_ofs	= 0x308,
 		.sliver_reg_ofs	= 0xdc0,
-		.phy_addr	= 1,
+		.phy_addr	= 6,
 	},
 };
 
@@ -502,7 +502,7 @@ static struct cpsw_platform_data cpsw_data = {
 	.mdio_div		= 0xff,
 	.channels		= 8,
 	.cpdma_reg_ofs		= 0x800,
-	.slaves			= 1,
+	.slaves			= 2,
 	.slave_data		= cpsw_slaves,
 	.ale_reg_ofs		= 0xd00,
 	.ale_entries		= 1024,
@@ -513,6 +513,11 @@ static struct cpsw_platform_data cpsw_data = {
 	.control		= cpsw_control,
 	.host_port_num		= 0,
 	.version		= CPSW_CTRL_VERSION_2,
+	/* uboot can only activate one network port;
+	 * There are two Ethernet ports on SOM-PH8700,enabled by default J17;
+	 * If you want to use the J16 , can be modified by changing ".active_slave=1"
+	 */
+	.active_slave		= 0,
 };
 #endif
 
@@ -582,6 +587,10 @@ int board_eth_init(bd_t *bis)
 		writel(MII_MODE_ENABLE, &cdev->miisel);
 		cpsw_slaves[0].phy_if = cpsw_slaves[1].phy_if =
 				PHY_INTERFACE_MODE_MII;
+	} else if (board_is_som_ph8700()) {
+		writel(RGMII_MODE_ENABLE, &cdev->miisel);
+		cpsw_slaves[0].phy_if = cpsw_slaves[1].phy_if =
+				PHY_INTERFACE_MODE_RGMII;
 	} else {
 		writel((RGMII_MODE_ENABLE | RGMII_INT_DELAY), &cdev->miisel);
 		cpsw_slaves[0].phy_if = cpsw_slaves[1].phy_if =
