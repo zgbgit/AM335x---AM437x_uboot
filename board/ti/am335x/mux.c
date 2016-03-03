@@ -387,6 +387,7 @@ void enable_board_pin_mux(struct ti_am_eeprom *header)
 #endif
 	} else if (board_is_som_ph8700()) {
 		configure_module_pin_mux(mmc0_pin_mux);
+		configure_module_pin_mux(mmc1_pin_mux);
 		configure_module_pin_mux(i2c0_pin_mux);
 		configure_module_pin_mux(rgmii1_pin_mux);
 		configure_module_pin_mux(rgmii2_pin_mux);

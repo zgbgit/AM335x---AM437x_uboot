@@ -150,6 +150,7 @@
 	"run envboot; " \
 	"run mmcboot;" \
 	"setenv mmcdev 1; " \
+	"run envboot; " \
 	"setenv bootpart 1:2; " \
 	"run mmcboot;" \
 	"run nandboot;"
