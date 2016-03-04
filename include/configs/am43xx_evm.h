@@ -226,6 +226,7 @@
 #undef CONFIG_OMAP3_SPI
 #define CONFIG_TI_QSPI
 #define CONFIG_SPI_FLASH_MACRONIX
+#define CONFIG_SPI_FLASH_STMICRO
 #define CONFIG_CMD_SF
 #define CONFIG_CMD_SPI
 #define CONFIG_TI_SPI_MMAP
@@ -245,7 +246,7 @@
 	DEFAULT_LINUX_BOOT_ENV \
 	DEFAULT_MMC_TI_ARGS \
 	"fdtfile=undefined\0" \
-	"bootpart=0:2\0" \
+	"bootpart=0:1\0" \
 	"bootdir=/boot\0" \
 	"bootfile=zImage\0" \
 	"console=ttyO0,115200n8\0" \
@@ -267,13 +268,21 @@
 		"root=${ramroot} " \
 		"rootfstype=${ramrootfstype}\0" \
 	"loadramdisk=load ${devtype} ${devnum} ${rdaddr} ramdisk.gz\0" \
-	"loadimage=load ${devtype} ${bootpart} ${loadaddr} ${bootdir}/${bootfile}\0" \
-	"loadfdt=load ${devtype} ${bootpart} ${fdtaddr} ${bootdir}/${fdtfile}\0" \
+	"loadimage=load ${devtype} ${bootpart} ${loadaddr} ${bootfile}\0" \
+	"loadfdt=load ${devtype} ${bootpart} ${fdtaddr} ${fdtfile}\0" \
 	"mmcboot=mmc dev ${mmcdev}; " \
 		"setenv devnum ${mmcdev}; " \
 		"setenv devtype mmc; " \
 		"if mmc rescan; then " \
 			"echo SD/MMC found on device ${devnum};" \
+                       "if run loadbootenv;"\
+                                "then echo Loaded environment from ${bootenv};"\
+                                "run importbootenv;"\
+                        "fi;"\
+                        "if test -n $uenvcmd;"\
+                                "then echo Running uenvcmd ...;"\
+                                "run uenvcmd;"\
+                        "fi;"\
 			"if run loadimage; then " \
 				"run loadfdt; " \
 				"echo Booting from mmc${mmcdev} ...; " \
