@@ -441,6 +441,12 @@ void scale_vcores_generic(u32 m)
 		printf("%s failure\n", __func__);
 		return;
 	}
+
+	/* Disable DCDC4  Pulse Frequency Modulation */
+	if (tps65218_reg_write(TPS65218_PROT_LEVEL_1, TPS65218_DCDC4, 0, 0x80)) {
+		printf("%s failure\n", __func__);
+		return;
+	}
 }
 
 void scale_vcores_idk(u32 m)
