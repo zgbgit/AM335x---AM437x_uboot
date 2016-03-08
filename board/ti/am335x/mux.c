@@ -135,6 +135,11 @@ static struct module_pin_mux gpio0_7_pin_mux[] = {
 	{-1},
 };
 
+static struct module_pin_mux gpio0_31_pin_mux[] = {
+	{OFFSET(gpmc_wpn), (MODE(7) | PULLDOWN_EN)},	/* GPIO0_31 */
+	{-1},
+};
+
 static struct module_pin_mux rgmii1_pin_mux[] = {
 	{OFFSET(mii1_txen), MODE(2)},			/* RGMII1_TCTL */
 	{OFFSET(mii1_rxdv), MODE(2) | RXACTIVE},	/* RGMII1_RCTL */
@@ -391,6 +396,7 @@ void enable_board_pin_mux(struct ti_am_eeprom *header)
 		configure_module_pin_mux(i2c0_pin_mux);
 		configure_module_pin_mux(rgmii1_pin_mux);
 		configure_module_pin_mux(rgmii2_pin_mux);
+		configure_module_pin_mux(gpio0_31_pin_mux);
 	} else {
 		puts("Unknown board, cannot configure pinmux.");
 		hang();
