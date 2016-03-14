@@ -165,7 +165,7 @@ void enable_board_pin_mux(void)
 #if defined(CONFIG_NAND)
 		configure_module_pin_mux(nand_pin_mux);
 #endif
-	} else if (board_is_sk() || board_is_idk()) {
+	} else if (board_is_sk() || board_is_idk() || board_is_ph8800()) {
 		configure_module_pin_mux(rgmii1_pin_mux);
 		configure_module_pin_mux(rgmii2_pin_mux);
 #if defined(CONFIG_NAND)

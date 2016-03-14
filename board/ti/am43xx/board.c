@@ -342,7 +342,7 @@ const struct dpll_params *get_dpll_ddr_params(void)
 
 	if (board_is_eposevm())
 		return &epos_evm_dpll_ddr[ind];
-	else if (board_is_gpevm() || board_is_sk())
+	else if (board_is_gpevm() || board_is_sk() || board_is_ph8800())
 		return &gp_evm_dpll_ddr;
 	else if (board_is_idk())
 		return &idk_dpll_ddr;
@@ -597,7 +597,7 @@ u32 rtc_only_get_board_type(void)
 		return RTC_BOARD_EVM12;
 	else if (board_is_gpevm())
 		return RTC_BOARD_GPEVM;
-	else if (board_is_sk())
+	else if (board_is_sk()|| board_is_ph8800())
 		return RTC_BOARD_SK;
 
 	return 0;
@@ -628,7 +628,7 @@ void sdram_init(void)
 		enable_vtt_regulator();
 		config_ddr(0, &ioregs_ddr3, NULL, NULL,
 			   &ddr3_emif_regs_400Mhz, 0);
-	} else if (board_is_sk()) {
+	} else if (board_is_sk()|| board_is_ph8800()) {
 		config_ddr(400, &ioregs_ddr3, NULL, NULL,
 			   &ddr3_sk_emif_regs_400Mhz, 0);
 	} else if (board_is_idk()) {
@@ -929,7 +929,7 @@ int board_eth_init(bd_t *bis)
 		writel(RMII_MODE_ENABLE | RMII_CHIPCKL_ENABLE, &cdev->miisel);
 		cpsw_slaves[0].phy_if = PHY_INTERFACE_MODE_RMII;
 		cpsw_slaves[0].phy_addr = 16;
-	} else if (board_is_sk()) {
+	} else if (board_is_sk() || board_is_ph8800()) {
 		writel(RGMII_MODE_ENABLE, &cdev->miisel);
 		cpsw_slaves[0].phy_if = PHY_INTERFACE_MODE_RGMII;
 		cpsw_slaves[0].phy_addr = 4;

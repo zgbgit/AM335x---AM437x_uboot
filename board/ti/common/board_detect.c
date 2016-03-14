@@ -97,7 +97,9 @@ int __maybe_unused ti_i2c_eeprom_am_get(int bus_addr, int dev_addr,
 	rc = i2c_read(dev_addr, 0x0, 2, (uint8_t *)ep, sizeof(*ep));
 	if (rc)
 		return rc;
-
+#ifdef CONFIG_BOARD_SOM_PH8800
+	strcpy(ep->name, "SOM-PH8800");
+#endif
 	/* Corrupted data??? */
 	if (ep->header != TI_EEPROM_HEADER_MAGIC) {
 		rc = i2c_read(dev_addr, 0x0, 2, (uint8_t *)ep, sizeof(*ep));
