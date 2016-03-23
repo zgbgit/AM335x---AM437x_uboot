@@ -249,7 +249,7 @@
 	"bootpart=0:1\0" \
 	"bootdir=/boot\0" \
 	"bootfile=zImage\0" \
-	"console=ttyO0,115200n8\0" \
+	"console=ttyS0,115200n8\0" \
 	"partitions=" \
 		"uuid_disk=${uuid_gpt_disk};" \
 		"name=rootfs,start=2MiB,size=-,uuid=${uuid_gpt_rootfs}\0" \
