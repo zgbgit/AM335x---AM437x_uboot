@@ -48,8 +48,12 @@
  * should be in OCMC ram
  */
 #define CONFIG_SPL_TEXT_BASE		0x40300350
-#else
+#else 
+#ifdef CONFIG_QSPI_BOOT_8800
+#define CONFIG_SPL_TEXT_BASE		0x30000000
+#else 
 #define CONFIG_SPL_TEXT_BASE		0x402F4000
+#endif
 #endif
 #define CONFIG_SPL_MAX_SIZE		(220 << 10)	/* 220KB */
 #define CONFIG_SYS_SPL_ARGS_ADDR	(CONFIG_SYS_SDRAM_BASE + \
@@ -66,7 +70,7 @@
  * Since SPL did pll and ddr initialization for us,
  * we don't need to do it twice.
  */
-#if !defined(CONFIG_SPL_BUILD) && !defined(CONFIG_QSPI_BOOT)
+#if !defined(CONFIG_SPL_BUILD) && !defined(CONFIG_QSPI_BOOT_8800)
 #define CONFIG_SKIP_LOWLEVEL_INIT
 #endif
 
@@ -198,8 +202,8 @@
 #define DFUARGS
 #endif
 
-#ifdef CONFIG_QSPI_BOOT
-#define CONFIG_SYS_TEXT_BASE           0x30000000
+#ifdef CONFIG_QSPI_BOOT_8800
+#define CONFIG_SYS_TEXT_BASE           0x30020000
 #undef CONFIG_ENV_IS_IN_FAT
 #define CONFIG_ENV_IS_IN_SPI_FLASH
 #define CONFIG_SYS_REDUNDAND_ENVIRONMENT
@@ -270,6 +274,16 @@
 	"loadramdisk=load ${devtype} ${devnum} ${rdaddr} ramdisk.gz\0" \
 	"loadimage=load ${devtype} ${bootpart} ${loadaddr} ${bootfile}\0" \
 	"loadfdt=load ${devtype} ${bootpart} ${fdtaddr} ${fdtfile}\0" \
+	"update_qspi_flash=mmc dev 0; " \
+		"if mmc rescan; then " \
+			"echo SD/MMC found on device ${devnum};" \
+			"fatload mmc 0 ${loadaddr} u-boot-spl.bin;"\
+			"sf probe 0;" \
+			"sf erase 0x0 0x90000;" \
+			"sf write ${loadaddr} 0x0 ${filesize};" \
+			"fatload mmc 0 ${loadaddr} u-boot.bin;"\
+			"sf write ${loadaddr} 0x20000 ${filesize};" \
+		"fi;\0" \
 	"mmcboot=mmc dev ${mmcdev}; " \
 		"setenv devnum ${mmcdev}; " \
 		"setenv devtype mmc; " \
@@ -330,6 +344,10 @@
 #define CONFIG_BOOTCOMMAND \
 	"run findfdt; " \
 	"run envboot;" \
+	"run mmcboot;" \
+	"setenv mmcdev 1; " \
+	"run envboot; " \
+	"setenv bootpart 1:1; " \
 	"run mmcboot;" \
 	"run usbboot;" \
 	NANDBOOT \

@@ -131,6 +131,15 @@ __weak void __noreturn jump_to_image_no_args(struct spl_image_info *spl_image)
 	image_entry();
 }
 
+void __noreturn jump_to_image_no_args_qspi(void)
+{
+	typedef void __noreturn (*image_entry_noargs_t)(void);
+	image_entry_noargs_t image_entry =
+		(image_entry_noargs_t)(unsigned long)0x30020000;
+	image_entry();
+}
+
+
 #ifdef CONFIG_SPL_RAM_DEVICE
 static void spl_ram_load_image(void)
 {
@@ -261,6 +270,10 @@ void board_init_r(gd_t *dummy1, ulong dummy2)
 		break;
 #endif
 	default:
+#if defined(CONFIG_QSPI_BOOT_8800)
+		jump_to_image_no_args_qspi();
+#endif
+
 #if defined(CONFIG_SPL_SERIAL_SUPPORT) && defined(CONFIG_SPL_LIBCOMMON_SUPPORT)
 		puts("SPL: Unsupported Boot Device!\n");
 #endif
