@@ -38,7 +38,7 @@ static inline int board_is_gp_evm(void)
 
 static inline int board_is_som_ph8700(void)
 {
-	return board_am_is("SOM-PH8700");
+	return board_am_is("SOM-PH87");
 }
 
 static inline int board_is_evm_15_or_later(struct ti_am_eeprom *header)

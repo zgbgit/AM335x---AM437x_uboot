@@ -28,8 +28,13 @@ static inline int board_is_gpevm(void)
 }
 static inline int board_is_ph8800(void)
 {
-	return board_am_is("SOM-PH8800");
+	return board_am_is("SOM-PH88");
 }
+static inline int board_is_ec8800(void)
+{
+	return board_am_is("EVK-EC88");
+}
+
 
 
 static inline int board_is_sk(void)

@@ -97,9 +97,6 @@ int __maybe_unused ti_i2c_eeprom_am_get(int bus_addr, int dev_addr,
 	rc = i2c_read(dev_addr, 0x0, 2, (uint8_t *)ep, sizeof(*ep));
 	if (rc)
 		return rc;
-#ifdef CONFIG_BOARD_SOM_PH8800
-	strcpy(ep->name, "SOM-PH8800");
-#endif
 	/* Corrupted data??? */
 	if (ep->header != TI_EEPROM_HEADER_MAGIC) {
 		rc = i2c_read(dev_addr, 0x0, 2, (uint8_t *)ep, sizeof(*ep));
@@ -113,6 +110,18 @@ int __maybe_unused ti_i2c_eeprom_am_get(int bus_addr, int dev_addr,
 		if (rc)
 			return rc;
 	}
+#ifdef CONFIG_BOARD_SOM_PH8800
+	strcpy(ep->name, "SOM-PH88");
+#endif
+#ifdef CONFIG_BOARD_SOM_PH8700
+	strcpy(ep->name, "SOM-PH87");
+#endif
+#ifdef CONFIG_BOARD_EVK_EC8800
+	strcpy(ep->name, "EVK-EC88");
+#endif
+
+
+
 	if (ep->header != TI_EEPROM_HEADER_MAGIC){
 		/*
 		* strcpy(ep->name, "SOM-PH8700");
@@ -121,8 +130,12 @@ int __maybe_unused ti_i2c_eeprom_am_get(int bus_addr, int dev_addr,
 		* Temporary configuration, because PH8700 eeprom is empty now;
 		* If the eeprom written content in the future ,please delete them;
 		*/
-		strcpy(ep->name, "SOM-PH8700");
+		//strcpy(ep->name, "SOM-PH8700");
+#if defined CONFIG_BOARD_SOM_PH8800 || defined CONFIG_BOARD_SOM_PH8700 || defined CONFIG_BOARD_EVK_EC8800
+
 		ep->header = TI_EEPROM_HEADER_MAGIC;
+#endif
+
 		/*return -1;*/
         }
 
