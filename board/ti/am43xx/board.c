@@ -935,6 +935,7 @@ int board_eth_init(bd_t *bis)
 		cpsw_slaves[0].phy_addr = 7;
 		cpsw_slaves[1].phy_if = PHY_INTERFACE_MODE_RGMII;
 		cpsw_slaves[1].phy_addr = 6;
+		cpsw_data.active_slave = 0;
 	} else if (board_is_ec8800()) {
 		writel(RGMII_MODE_ENABLE, &cdev->miisel);
 		cpsw_slaves[0].phy_if = PHY_INTERFACE_MODE_RGMII;
