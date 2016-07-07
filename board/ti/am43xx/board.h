@@ -32,7 +32,7 @@ static inline int board_is_ph8800(void)
 }
 static inline int board_is_ec8800(void)
 {
-	return board_am_is("EVK-EC88");
+	return board_am_is("SBC-EC88");
 }
 
 

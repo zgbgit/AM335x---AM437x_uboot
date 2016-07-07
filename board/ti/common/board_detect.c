@@ -116,8 +116,8 @@ int __maybe_unused ti_i2c_eeprom_am_get(int bus_addr, int dev_addr,
 #ifdef CONFIG_BOARD_SOM_PH8700
 	strcpy(ep->name, "SOM-PH87");
 #endif
-#ifdef CONFIG_BOARD_EVK_EC8800
-	strcpy(ep->name, "EVK-EC88");
+#ifdef CONFIG_BOARD_SBC_EC8800
+	strcpy(ep->name, "SBC-EC88");
 #endif
 
 
@@ -131,7 +131,7 @@ int __maybe_unused ti_i2c_eeprom_am_get(int bus_addr, int dev_addr,
 		* If the eeprom written content in the future ,please delete them;
 		*/
 		//strcpy(ep->name, "SOM-PH8700");
-#if defined CONFIG_BOARD_SOM_PH8800 || defined CONFIG_BOARD_SOM_PH8700 || defined CONFIG_BOARD_EVK_EC8800
+#if defined CONFIG_BOARD_SOM_PH8800 || defined CONFIG_BOARD_SOM_PH8700 || defined CONFIG_BOARD_SBC_EC8800
 
 		ep->header = TI_EEPROM_HEADER_MAGIC;
 #endif
