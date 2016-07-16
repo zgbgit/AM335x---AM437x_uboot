@@ -907,6 +907,11 @@ int board_eth_init(bd_t *bis)
 		puts("<ethaddr> not set. Validating first E-fuse MAC\n");
 		if (is_valid_ethaddr(mac_addr))
 			eth_setenv_enetaddr("ethaddr", mac_addr);
+
+	setenv("mmcdev", "0");
+#ifdef CONFIG_QSPI_BOOT_8800
+	setenv("mmcdev", "1");
+#endif
 	}
 
 #ifndef CONFIG_SPL_BUILD
