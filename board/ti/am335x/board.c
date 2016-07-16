@@ -559,6 +559,11 @@ int board_eth_init(bd_t *bis)
 	if (!getenv("ethaddr")) {
 		printf("<ethaddr> not set. Validating first E-fuse MAC\n");
 
+	setenv("mmcdev", "0");
+#ifdef CONFIG_EMMC_BOOT_PH8700
+	setenv("mmcdev", "1");
+#endif
+
 		if (is_valid_ethaddr(mac_addr))
 			eth_setenv_enetaddr("ethaddr", mac_addr);
 	}
